@@ -1,1 +1,18 @@
 <h1>sahir Kazi Sample HTML codes</h1>
+
+
+
+<input type='text' id='input1' value='This Is A Sample'>
+<input type='text' id='input2' value=''> <!-- Mark it to hidden -->
+
+<input type='button' id='btn' value='Change'>
+
+<script>
+jQuery(document).ready(function(){
+    jQuery('#btn').live('click', function(event) { 
+        var lower = $('input#input1').val().toLowerCase();
+        var hyp = lower.replace(/ /g,"-");
+        $('input#input2').val(hyp);
+    });
+});
+  </script>
