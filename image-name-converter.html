@@ -1,0 +1,11 @@
+<html>
+  <body>
+    <input type="text" id="test" />
+    <script>
+      $("#test").keyup(function () {
+    this.value = this.value.replace(/ /g, "-");
+     this.value = this.value.replace(/_/g, "-");
+});
+      </script>
+    </body>
+  </html>
