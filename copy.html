@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Copy Content</title>
+</head>
+<body>
+    <!-- Content to be copied -->
+    <div id="content" style="display: none;">
+       
+Steps to Open Webpage - 
+- open an incognito browser window
+- go to this url:  https://sgspzwwwl01a.seagate.com:8443/libs/granite/core/content/login.html
+- login with
+username: marketing-reviewer
+password: marketing
+- now visit the preview url in the same Incognito browser window:
+
+    </div>
+
+    <script>
+        // Function to copy content to clipboard using Clipboard API
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                console.log('Text copied to clipboard');
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+        }
+
+        // Copy content when the page loads
+        window.addEventListener("load", function() {
+            // Get the content from the element
+            const contentElement = document.getElementById("content");
+            const contentText = contentElement.textContent;
+
+            // Copy the content to clipboard
+            copyToClipboard(contentText).then(() => {
+                // Show an alert after copying is done
+                alert("Copied data done");
+            });
+        });
+    </script>
+</body>
+</html>
