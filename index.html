@@ -56,23 +56,10 @@
             font-size: 1.1em;
             color: #555;
         }
-        .form-container input, .form-container textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        .btn:hover {
-            background-color: #45a049;
+        .creator-name {
+            font-style: italic;
+            color: #666;
+            font-size: 0.9em;
         }
         @media screen and (max-width: 768px) {
             header {
@@ -98,26 +85,31 @@
         <!-- Useful Tools Section -->
         <section>
             <h2>Useful Tools</h2>
+            
+            <!-- Example Tool 1 with Creator Info -->
             <div class="link-item">
                 <a href="https://www.exampletool.com" target="_blank">Example Tool 1</a>
+                <span class="creator-name">Created by: John Doe</span>
             </div>
+            
+            <!-- Example Tool 2 with Creator Info -->
             <div class="link-item">
                 <a href="https://www.exampletool2.com" target="_blank">Example Tool 2</a>
+                <span class="creator-name">Created by: Jane Smith</span>
             </div>
-            <!-- Add more tools here -->
+
+            <!-- Add more tools here with respective creator names -->
+
         </section>
 
-        <!-- Creator Information -->
-        <div class="creator-info">
-            <p>Created by: <strong>Your Name</strong></p>
-        </div>
     </div>
 
     <script>
         // Function to fetch a random motivational quote from an API
         async function fetchQuote() {
             try {
-                const response = await fetch("https://api.quotable.io/random");
+                // Adding a cache-busting parameter to avoid caching issues
+                const response = await fetch("https://api.quotable.io/random?cache_bust=" + new Date().getTime());
                 const data = await response.json();
                 document.getElementById('quote').textContent = `"${data.content}" - ${data.author}`;
             } catch (error) {
@@ -132,4 +124,3 @@
 
 </body>
 </html>
-
