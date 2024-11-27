@@ -18,7 +18,8 @@
             padding: 1em;
         }
         .container {
-            width: 80%;
+            width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -27,6 +28,13 @@
         }
         h2 {
             color: #333;
+        }
+        .quote {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #333;
+            text-align: center;
         }
         .link-item {
             margin: 10px 0;
@@ -42,6 +50,19 @@
             color: #4CAF50;
             font-weight: bold;
         }
+        .creator-info {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.1em;
+            color: #555;
+        }
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
         .btn {
             background-color: #4CAF50;
             color: white;
@@ -53,12 +74,14 @@
         .btn:hover {
             background-color: #45a049;
         }
-        .form-container input, .form-container textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        @media screen and (max-width: 768px) {
+            header {
+                font-size: 1.2em;
+                padding: 0.8em;
+            }
+            .container {
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -69,36 +92,8 @@
     </header>
 
     <div class="container">
-
-        <!-- Internal Meeting Links Section -->
-        <section>
-            <h2>Internal Meeting Links</h2>
-            <div id="internal-meeting-links">
-                <div class="link-item">
-                    <span id="internal-link">Meeting Link 1</span>
-                    <button class="btn" onclick="editLink('internal')">Edit</button>
-                </div>
-            </div>
-            <div class="form-container" id="internal-edit-form" style="display:none;">
-                <input type="text" id="internal-link-input" placeholder="Enter new internal meeting link">
-                <button class="btn" onclick="updateLink('internal')">Update Link</button>
-            </div>
-        </section>
-
-        <!-- Client Meeting Links Section -->
-        <section>
-            <h2>Client Meeting Links</h2>
-            <div id="client-meeting-links">
-                <div class="link-item">
-                    <span id="client-link">Meeting Link 1</span>
-                    <button class="btn" onclick="editLink('client')">Edit</button>
-                </div>
-            </div>
-            <div class="form-container" id="client-edit-form" style="display:none;">
-                <input type="text" id="client-link-input" placeholder="Enter new client meeting link">
-                <button class="btn" onclick="updateLink('client')">Update Link</button>
-            </div>
-        </section>
+        <!-- Motivational Quote Section -->
+        <div class="quote" id="quote"></div>
 
         <!-- Useful Tools Section -->
         <section>
@@ -112,51 +107,29 @@
             <!-- Add more tools here -->
         </section>
 
-        <!-- Notice Board Section -->
-        <section>
-            <h2>Notice Board</h2>
-            <div class="link-item">
-                <span>Reminder: Please submit your reports by Friday.</span>
-            </div>
-            <div class="link-item">
-                <span>New Team Meeting scheduled for next Monday.</span>
-            </div>
-            <!-- Add more notices here -->
-        </section>
-
+        <!-- Creator Information -->
+        <div class="creator-info">
+            <p>Created by: <strong>Your Name</strong></p>
+        </div>
     </div>
 
     <script>
-        function editLink(type) {
-            // Show the form for editing the link
-            if (type === 'internal') {
-                document.getElementById('internal-edit-form').style.display = 'block';
-            } else if (type === 'client') {
-                document.getElementById('client-edit-form').style.display = 'block';
+        // Function to fetch a random motivational quote from an API
+        async function fetchQuote() {
+            try {
+                const response = await fetch("https://api.quotable.io/random");
+                const data = await response.json();
+                document.getElementById('quote').textContent = `"${data.content}" - ${data.author}`;
+            } catch (error) {
+                console.error("Error fetching quote:", error);
+                document.getElementById('quote').textContent = "Stay positive and keep pushing forward!";
             }
         }
 
-        function updateLink(type) {
-            // Update the link based on input
-            let inputField = (type === 'internal') ? document.getElementById('internal-link-input') : document.getElementById('client-link-input');
-            let newLink = inputField.value.trim();
-
-            if (newLink !== "") {
-                // Update the displayed link
-                let linkElement = (type === 'internal') ? document.getElementById('internal-link') : document.getElementById('client-link');
-                linkElement.textContent = newLink;
-
-                // Hide the form after update
-                if (type === 'internal') {
-                    document.getElementById('internal-edit-form').style.display = 'none';
-                } else if (type === 'client') {
-                    document.getElementById('client-edit-form').style.display = 'none';
-                }
-            } else {
-                alert("Please enter a valid link.");
-            }
-        }
+        // Call the fetchQuote function to load the quote on page load
+        fetchQuote();
     </script>
 
 </body>
 </html>
+
