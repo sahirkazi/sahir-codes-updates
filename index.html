@@ -1,25 +1,162 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Collaboration Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1em;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        section {
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #333;
+        }
+        .link-item {
+            margin: 10px 0;
+            padding: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .link-item a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
 
-<iframe width="100%" height="300" src="//jsfiddle.net/sahirkazi/wy74djcm/embedded/result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+    <header>
+        <h1>Team Collaboration Page</h1>
+    </header>
 
+    <div class="container">
 
+        <!-- Internal Meeting Links Section -->
+        <section>
+            <h2>Internal Meeting Links</h2>
+            <div id="internal-meeting-links">
+                <div class="link-item">
+                    <span id="internal-link">Meeting Link 1</span>
+                    <button class="btn" onclick="editLink('internal')">Edit</button>
+                </div>
+            </div>
+            <div class="form-container" id="internal-edit-form" style="display:none;">
+                <input type="text" id="internal-link-input" placeholder="Enter new internal meeting link">
+                <button class="btn" onclick="updateLink('internal')">Update Link</button>
+            </div>
+        </section>
 
+        <!-- Client Meeting Links Section -->
+        <section>
+            <h2>Client Meeting Links</h2>
+            <div id="client-meeting-links">
+                <div class="link-item">
+                    <span id="client-link">Meeting Link 1</span>
+                    <button class="btn" onclick="editLink('client')">Edit</button>
+                </div>
+            </div>
+            <div class="form-container" id="client-edit-form" style="display:none;">
+                <input type="text" id="client-link-input" placeholder="Enter new client meeting link">
+                <button class="btn" onclick="updateLink('client')">Update Link</button>
+            </div>
+        </section>
 
-<input type='text' id='input1' value='This Is A Sample'>
-<input type='text' id='input2' value=''> <!-- Mark it to hidden -->
+        <!-- Useful Tools Section -->
+        <section>
+            <h2>Useful Tools</h2>
+            <div class="link-item">
+                <a href="https://www.exampletool.com" target="_blank">Example Tool 1</a>
+            </div>
+            <div class="link-item">
+                <a href="https://www.exampletool2.com" target="_blank">Example Tool 2</a>
+            </div>
+            <!-- Add more tools here -->
+        </section>
 
-<input type='button' id='btn' value='Change'>
+        <!-- Notice Board Section -->
+        <section>
+            <h2>Notice Board</h2>
+            <div class="link-item">
+                <span>Reminder: Please submit your reports by Friday.</span>
+            </div>
+            <div class="link-item">
+                <span>New Team Meeting scheduled for next Monday.</span>
+            </div>
+            <!-- Add more notices here -->
+        </section>
 
+    </div>
 
-<script>
-jQuery(document).ready(function() {
-  jQuery('#btn').live('click', function(event) {
-    var lower = $('input#input1').val().toLowerCase();
-    var hyp = lower.replace(/ /g, "-");
-    $('input#input2').val(hyp);
-  });
-});
-</script>
+    <script>
+        function editLink(type) {
+            // Show the form for editing the link
+            if (type === 'internal') {
+                document.getElementById('internal-edit-form').style.display = 'block';
+            } else if (type === 'client') {
+                document.getElementById('client-edit-form').style.display = 'block';
+            }
+        }
 
-  
+        function updateLink(type) {
+            // Update the link based on input
+            let inputField = (type === 'internal') ? document.getElementById('internal-link-input') : document.getElementById('client-link-input');
+            let newLink = inputField.value.trim();
+
+            if (newLink !== "") {
+                // Update the displayed link
+                let linkElement = (type === 'internal') ? document.getElementById('internal-link') : document.getElementById('client-link');
+                linkElement.textContent = newLink;
+
+                // Hide the form after update
+                if (type === 'internal') {
+                    document.getElementById('internal-edit-form').style.display = 'none';
+                } else if (type === 'client') {
+                    document.getElementById('client-edit-form').style.display = 'none';
+                }
+            } else {
+                alert("Please enter a valid link.");
+            }
+        }
+    </script>
+
+</body>
 </html>
