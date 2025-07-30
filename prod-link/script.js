@@ -1,6 +1,6 @@
 document.getElementById('changeDomainButton').addEventListener('click', function() {
     const inputUrl = document.getElementById('urlInput').value.trim();
-    const newDomain = 'https://aemedit.seagate.com/editor.html/content/seagate/language-masters/en';
+    const newDomain = 'https://sgspzwwwl01a.seagate.com:8443/editor.html/content/seagate/language-masters/en/';
 
     try {
         const url = new URL(inputUrl);
