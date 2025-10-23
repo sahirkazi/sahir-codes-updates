@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Locale Addition</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f2f2f2;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.label {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.input {
+    width: calc(100% - 140px); /* Adjust input width */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s ease; /* Add smooth transition */
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+.button:active {
+    transform: translateY(1px); /* Add subtle click effect */
+}
+
+#resultContainer {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+.url-text {
+    display: block;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    overflow-wrap: break-word;
+    background-color: #ffffff;
+}
+
+.region-container {
+    margin-bottom: 20px; /* Increase margin */
+}
+
+h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+/* Existing CSS styles remain the same */
+
+.input {
+    width: calc(100% - 240px); /* Adjust input width */
+}
+
+.button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Add transform transition */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    cursor: default; /* Remove cursor */
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+.button:active {
+    transform: translateY(1px); /* Add subtle click effect */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Adjust shadow on click */
+}
+
+/* Adjust button placement */
+.button-group {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.copy-all-button {
+    margin-left: auto; /* Push Copy All button to the right */
+}
+/* Existing CSS styles remain the same */
+
+.region-container {
+    margin-bottom: 20px;
+    position: relative; /* Add relative positioning */
+}
+
+/* New button styles */
+.copy-button {
+    position: absolute;
+    bottom: 10px; /* Adjust button position */
+    right: 10px; /* Adjust button position */
+}
+.button.clicked {
+    background-color: #45a049 !important; /* Change color */
+}
+.copy-all-button {
+    background-color: #007bff; /* Change color for copy all button */
+    width: 100%; /* Set width to 100% */
+    margin: 10px auto 0; /* Center-align the button */
+}
+</style>
+<script>
+    function addLocalePaths() {
+        var userInputUrl = document.getElementById("urlInput").value.trim();
+    
+        // Check if the input URL is empty
+        if (userInputUrl === "") {
+            alert("Please enter a valid URL.");
+            return;
+        }
+    
+        // Parse the provided URL to extract domain and path
+        var urlParts = userInputUrl.match(/^https?:\/\/([^/]+)(\/.*)?$/);
+        if (!urlParts) {
+            alert("Invalid URL format. Please enter a valid URL.");
+            return;
+        }
+    
+        // Extract domain and path
+        var domain = urlParts[1];
+        var path = urlParts[2] || '';
+    
+        var regions = {
+            "APAC": ["as/en", "au/en", "in/en", "id/id", "sg/en", "kr/ko", "jp/ja", "tw/zh", "cn/zh"],
+            "EMEA": ["be/nl", "be/fr", "de/de", "es/es", "fr/fr", "it/it", "nl/nl"  ,"pl/pl", "pt/pt", "gb/en", "tr/tr", "em/en", "la/es", "br/pt"],
+            "US": ["ca/en", "ca/fr"]
+        };
+    
+        var resultUrls = {};
+    
+        // Construct the modified URL for each locale
+        Object.keys(regions).forEach(function(region) {
+            var urls = [];
+            regions[region].forEach(function(locale) {
+                var urlWithLocale = "https://" + domain + "/" + locale + path;
+                urls.push(urlWithLocale);
+            });
+            // Add original URL for the US region
+            if (region === "US") {
+                urls.push("https://" + domain + path);
+            }
+            resultUrls[region] = urls;
+        });
+    
+        // Display generated URLs and copy all URLs button on the page
+        var resultContainer = document.getElementById("resultContainer");
+        resultContainer.innerHTML = ''; // Clear previous results
+    
+        // Display each URL within the container
+        Object.keys(resultUrls).forEach(function(region) {
+            var regionContainer = document.createElement("div");
+            regionContainer.classList.add("region-container");
+    
+            var regionHeader = document.createElement("h3");
+            regionHeader.textContent = region;
+            regionContainer.appendChild(regionHeader);
+    
+            resultUrls[region].forEach(function(url) {
+                var urlText = document.createElement("div");
+                urlText.textContent = url;
+                urlText.classList.add("url-text");
+                regionContainer.appendChild(urlText);
+            });
+    
+            resultContainer.appendChild(regionContainer);
+    
+            // Create copy button for each region
+            var copyButton = document.createElement("button");
+            copyButton.textContent = "Copy " + region + " URLs";
+            copyButton.classList.add("button");
+            copyButton.onclick = function() {
+                copyUrlsToClipboard(resultUrls[region]);
+                alert("URLs copied to clipboard.");
+            };
+            regionContainer.appendChild(copyButton);
+        });
+    
+        // Create copy all URLs button
+        var copyAllButton = document.createElement("button");
+        copyAllButton.textContent = "Copy All URLs";
+        copyAllButton.classList.add("button");
+        copyAllButton.onclick = function() {
+            var allUrls = Object.values(resultUrls).flat();
+            copyUrlsToClipboard(allUrls);
+            alert("All URLs copied to clipboard.");
+        };
+        resultContainer.appendChild(copyAllButton);
+    
+        // Show the result container
+        resultContainer.style.display = 'block';
+    }
+    
+    function copyUrlsToClipboard(urls) {
+        var urlsText = urls.join('\n');
+        var tempInput = document.createElement("textarea");
+        tempInput.value = urlsText;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+    }
+    </script>
+    </head>
+    <body>
+    <div class="container">
+        <label for="urlInput" class="label">Enter URL (e.g:https://www.seagate.com/)</label>
+        <input type="text" id="urlInput" class="input" placeholder="https://www.example.com">
+        <button onclick="addLocalePaths()" class="button">Add Locale Paths</button>
+        <div id="resultContainer" style="display: none;">
+            <!-- URLs will be appended here -->
+        </div>
+    </div>
+    </body>
+    </html>
