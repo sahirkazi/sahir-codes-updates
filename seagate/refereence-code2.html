@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Renamer & Downloader</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f9f9f9;
+    }
+    h1 {
+      color: #333;
+    }
+    input[type="file"] {
+      margin: 15px 0;
+    }
+    .file-item {
+      margin-bottom: 10px;
+      padding: 10px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .file-item span {
+      display: inline-block;
+      width: 60%;
+    }
+    .file-item button {
+      float: right;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Rename & Download Images One by One</h1>
+  <p>Select images:</p>
+  <input type="file" id="fileInput" multiple accept="image/*">
+
+  <div id="output"></div>
+
+  <script>
+    function sanitizeFileName(name) {
+      return name
+        .toLowerCase()
+        .replace(/[_ ]+/g, '-'); // Replace spaces and underscores with hyphens
+    }
+
+    document.getElementById('fileInput').addEventListener('change', async function (event) {
+      const files = event.target.files;
+      const outputDiv = document.getElementById('output');
+      outputDiv.innerHTML = '';
+
+      if (files.length === 0) {
+        outputDiv.innerHTML = '<p>No files selected.</p>';
+        return;
+      }
+
+      for (const file of files) {
+        const ext = file.name.substring(file.name.lastIndexOf('.'));
+        const baseName = file.name.substring(0, file.name.lastIndexOf('.'));
+        const newName = sanitizeFileName(baseName) + ext.toLowerCase();
+
+        const arrayBuffer = await file.arrayBuffer();
+        const blob = new Blob([arrayBuffer], { type: file.type });
+        const url = URL.createObjectURL(blob);
+
+        const container = document.createElement('div');
+        container.className = 'file-item';
+        container.innerHTML = `
+          <span>${file.name} → <strong>${newName}</strong></span>
+          <button onclick="downloadFile('${url}', '${newName}')">Download</button>
+        `;
+
+        outputDiv.appendChild(container);
+      }
+    });
+
+    function downloadFile(url, name) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      a.click();
+    }
+  </script>
+
+</body>
+</html>
